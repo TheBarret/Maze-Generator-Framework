@@ -27,8 +27,8 @@ Public Class Generator
         Next
     End Sub
     Public Sub Randomize()
-        Me.NodeWidth = Me.Bounds.Width \ (Me.NodesX + 2)
-        Me.NodeHeight = Me.Bounds.Height \ (Me.NodesY + 2)
+        Me.NodeWidth = Me.Bounds.Width \ (Me.NodesX)
+        Me.NodeHeight = Me.Bounds.Height \ (Me.NodesY)
         Me.NodeXmin = (Me.Bounds.Width - Me.NodesX * Me.NodeWidth) \ 2
         Me.NodeYmin = (Me.Bounds.Height - Me.NodesY * Me.NodeHeight) \ 2
         Me.Nodes = Me.CreateNodes(Me.NodesX, Me.NodesY)
