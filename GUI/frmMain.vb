@@ -28,8 +28,8 @@ Public Class frmMain
     End Sub
     Private Sub Redraw()
         Me.DoUpdate = True
-        Me.Maze.Width = Me.Scroller.Value
-        Me.Maze.Height = Me.Scroller.Value
+        Me.Maze.NodesX = Me.Scroller.Value
+        Me.Maze.NodesY = Me.Scroller.Value
         Me.Maze.Randomize()
         Me.Refresh()
     End Sub
