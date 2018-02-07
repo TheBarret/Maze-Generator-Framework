@@ -4,18 +4,18 @@
 Public Class Generator
     Implements IDisposable
     Public Property Nodes As Node(,)
-    Public Property Height As Integer
-    Public Property Width As Integer
+    Public Property NodesY As Integer
+    Public Property NodesX As Integer
     Protected Friend NodeWidth As Integer
     Protected Friend NodeHeight As Integer
     Protected Friend NodeXmin As Integer
     Protected Friend NodeYmin As Integer
     Protected Friend Bounds As Size
     Protected Friend Randomizer As Random
-    Sub New(Height As Integer, Width As Integer, Bounds As Size)
+    Sub New(NodesX As Integer, NodesY As Integer, Bounds As Size)
         Me.Randomizer = New Random(Me.GetHashCode)
-        Me.Height = Height
-        Me.Width = Width
+        Me.NodesY = NodesY
+        Me.NodesX = NodesX
         Me.Bounds = Bounds
         Me.Randomize()
     End Sub
@@ -27,11 +27,11 @@ Public Class Generator
         Next
     End Sub
     Public Sub Randomize()
-        Me.NodeWidth = Me.Bounds.Width \ (Me.Width + 2)
-        Me.NodeHeight = Me.Bounds.Height \ (Me.Height + 2)
-        Me.NodeXmin = (Me.Bounds.Width - Me.Width * Me.NodeWidth) \ 2
-        Me.NodeYmin = (Me.Bounds.Height - Me.Height * Me.NodeHeight) \ 2
-        Me.Nodes = Me.CreateNodes(Me.Width, Me.Height)
+        Me.NodeWidth = Me.Bounds.Width \ (Me.NodesX + 2)
+        Me.NodeHeight = Me.Bounds.Height \ (Me.NodesY + 2)
+        Me.NodeXmin = (Me.Bounds.Width - Me.NodesX * Me.NodeWidth) \ 2
+        Me.NodeYmin = (Me.Bounds.Height - Me.NodesY * Me.NodeHeight) \ 2
+        Me.Nodes = Me.CreateNodes(Me.NodesX, Me.NodesY)
         Me.Nodes(0, 0).Parent = Me.Nodes(0, 0)
         Me.CreateWalls(Me.Nodes(0, 0))
     End Sub
