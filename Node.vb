@@ -9,10 +9,8 @@ Public Class Node
     Public Property Dimensions As Rectangle
     Public Property Access As Accessibility
     Protected Friend Parent As Node
-    Protected Friend Generator As Generator
     Protected Friend Neighbours As Node()
-    Sub New(gen As Generator, index As Integer, row As Integer, column As Integer, x As Integer, y As Integer, w As Integer, h As Integer, Optional Access As Accessibility = Accessibility.Open)
-        Me.Generator = gen
+    Sub New(index As Integer, row As Integer, column As Integer, x As Integer, y As Integer, w As Integer, h As Integer, Optional Access As Accessibility = Accessibility.Open)
         Me.Index = index
         Me.Row = row
         Me.Column = column

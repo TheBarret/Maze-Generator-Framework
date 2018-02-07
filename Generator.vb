@@ -41,7 +41,7 @@ Public Class Generator
             y = Me.NodeYmin + Me.NodeHeight * row
             For column As Integer = 0 To w - 1
                 x = Me.NodeXmin + Me.NodeWidth * column
-                nodes(row, column) = New Node(Me, c, row, column, x, y, Me.NodeWidth, Me.NodeHeight)
+                nodes(row, column) = New Node(c, row, column, x, y, Me.NodeWidth, Me.NodeHeight)
                 c += 1
             Next
         Next
