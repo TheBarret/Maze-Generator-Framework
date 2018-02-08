@@ -29,7 +29,7 @@ Public Class frmMain
                     '// Auto solve?
                     If (Me.cbAutoSolve.Checked) Then
                         Dim solution As New List(Of Node)
-                        If (New Maze.Solver(Me.Maze).Search(Me.Maze.First, Me.Maze.Last, solution)) Then
+                        If (Me.Maze.Solve(Me.Maze.First, Me.Maze.Last, solution)) Then
                             g.DrawLines(Pens.Red, solution.Select(Function(x) x.Center).ToArray)
                         End If
                     End If
