@@ -65,11 +65,8 @@ Public Class Generator
         Return nodes
     End Function
     Private Sub CreateWalls(source As Node)
-
         Dim links As New List(Of Link), destination As Node
-
         links.AddRange(source.GetNeighbours.Select(Function(n) New Link(source, n)))
-
         Do
             destination = links.Pop(Me.Randomizer.Next(0, links.Count - 1)).AsDestination
             For i As Integer = links.Count - 1 To 0
