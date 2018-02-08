@@ -30,7 +30,7 @@ Public Class frmMain
                     If (Me.cbAutoSolve.Checked) Then
                         Dim solution As New List(Of Node)
                         If (Me.Maze.Solve(Me.Maze.First, Me.Maze.Last, solution)) Then
-                            g.DrawLines(Pens.Red, solution.Select(Function(x) x.Center).ToArray)
+                            g.DrawCurve(Pens.Red, solution.Select(Function(x) x.Center).ToArray)
                         End If
                     End If
 
@@ -49,7 +49,7 @@ Public Class frmMain
     End Sub
     Private Sub Redraw()
         Me.DoUpdate = True
-        Me.Maze.NodesX = Me.Scroller.Value
+        Me.Maze.NodesX = Me.Scroller.Value * 2
         Me.Maze.NodesY = Me.Scroller.Value
         Me.Maze.Randomize()
         Me.Refresh()
