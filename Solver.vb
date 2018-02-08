@@ -3,7 +3,7 @@ Public MustInherit Class Solver
     Public Function Solve(Start As Node, Destination As Node, ByRef Result As List(Of Node)) As Boolean
         Dim open As New List(Of Node) From {Start}
         Dim closed As New List(Of Node)
-        Dim current As Node = Start, distance As Double
+        Dim current As Node = Start
         While open.Any AndAlso Not closed.Any(Function(x) x Is Destination)
             current = open.First
             open.Remove(current)
@@ -12,7 +12,6 @@ Public MustInherit Class Solver
                 If (Not closed.Contains(node) AndAlso current.IsAccessible(node)) Then
                     If (Not open.Contains(node)) Then
                         node.Reminder = current
-                        distance = node.GetDistance(Destination)
                         node.Cost = 1 + node.Reminder.Cost
                         open.Add(node)
                         open = open.OrderBy(Function(x) x.F(Destination)).ToList
