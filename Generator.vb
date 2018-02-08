@@ -2,6 +2,7 @@
 
 <Serializable>
 Public Class Generator
+    Inherits Solver
     Implements IDisposable
     Public Property Nodes As Node(,)
     Public Property NodesY As Integer
