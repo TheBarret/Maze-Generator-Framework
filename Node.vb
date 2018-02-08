@@ -1,7 +1,5 @@
 ﻿Imports System.Drawing
-Imports System.Xml.Serialization
 
-<Serializable>
 Public Class Node
     Implements IComparable(Of Node)
     Public Property Index As Integer
