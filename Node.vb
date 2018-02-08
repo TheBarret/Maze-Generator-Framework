@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.Xml.Serialization
 
 <Serializable>
 Public Class Node
@@ -6,17 +7,14 @@ Public Class Node
     Public Property Index As Integer
     Public Property Row As Integer
     Public Property Column As Integer
-    Public Property Pencil As Pen
-    Public Property Dimensions As Rectangle
     Public Property Access As Accessibility
-    Public Property Visited As Boolean
-    Public Property KnownPlaces As Dictionary(Of Node, Double)
-    Protected Friend Cost As Double
+    Public Property Dimensions As Rectangle
+    Public Property Pencil As Pen
     Protected Friend Parent As Node
+    Protected Friend Cost As Double
     Protected Friend Reminder As Node
     Protected Friend Neighbours As Node()
     Sub New(index As Integer, row As Integer, column As Integer, x As Integer, y As Integer, w As Integer, h As Integer, Optional Access As Accessibility = Accessibility.Open)
-        Me.Visited = False
         Me.Cost = 1
         Me.Index = index
         Me.Row = row
@@ -25,7 +23,6 @@ Public Class Node
         Me.Neighbours = New Node(3) {}
         Me.Pencil = New Pen(Brushes.White, 2)
         Me.Dimensions = New Rectangle(x, y, w, h)
-        Me.KnownPlaces = New Dictionary(Of Node, Double)
     End Sub
     Public Sub Draw(g As Graphics)
         For index As Integer = 0 To Me.Neighbours.Count - 1

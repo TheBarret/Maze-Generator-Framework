@@ -1,5 +1,4 @@
-﻿<Serializable>
-Public Class Link
+﻿Public Class Link
     Implements IComparable(Of Link)
     Public Property Source As Node
     Public Property Destination As Node

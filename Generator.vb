@@ -1,6 +1,6 @@
 ﻿Imports System.Drawing
+Imports System.Security.Cryptography
 
-<Serializable>
 Public Class Generator
     Inherits Solver
     Implements IDisposable
@@ -14,7 +14,7 @@ Public Class Generator
     Protected Friend Bounds As Size
     Protected Friend Randomizer As Random
     Sub New(NodesX As Integer, NodesY As Integer, Bounds As Size)
-        Me.Randomizer = New Random(Me.GetHashCode)
+        Me.Randomizer = New Random(Generator.Seed)
         Me.NodesY = NodesY
         Me.NodesX = NodesX
         Me.Bounds = Bounds
@@ -66,9 +66,12 @@ Public Class Generator
     End Function
     Private Sub CreateWalls(source As Node)
         Dim links As New List(Of Link), destination As Node
+
         links.AddRange(source.GetNeighbours.Select(Function(n) New Link(source, n)))
+
         Do
-            destination = links.Pop(Me.Randomizer.Next(0, links.Count - 1)).AsDestination
+            destination = links.Pop(Me.Randomizer.Next(links.Count)).AsDestination
+
             For i As Integer = links.Count - 1 To 0
                 If (links(i).Destination.HasParent) Then
                     links.RemoveAt(i)
@@ -81,6 +84,13 @@ Public Class Generator
             Next
         Loop While links.Count > 0
     End Sub
+    Public Shared Function Seed() As Int32
+        Using rng As New RNGCryptoServiceProvider
+            Dim output() As Byte = New Byte(3) {}
+            rng.GetBytes(output)
+            Return BitConverter.ToInt32(output, 0)
+        End Using
+    End Function
     Public ReadOnly Property First As Node
         Get
             Return Me.Nodes(0, 0)
