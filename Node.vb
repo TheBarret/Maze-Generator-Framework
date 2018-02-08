@@ -2,15 +2,22 @@
 
 <Serializable>
 Public Class Node
+    Implements IComparable(Of Node)
     Public Property Index As Integer
     Public Property Row As Integer
     Public Property Column As Integer
     Public Property Pencil As Pen
     Public Property Dimensions As Rectangle
     Public Property Access As Accessibility
+    Public Property Visited As Boolean
+    Public Property KnownPlaces As Dictionary(Of Node, Double)
+    Protected Friend Cost As Double
     Protected Friend Parent As Node
+    Protected Friend Reminder As Node
     Protected Friend Neighbours As Node()
     Sub New(index As Integer, row As Integer, column As Integer, x As Integer, y As Integer, w As Integer, h As Integer, Optional Access As Accessibility = Accessibility.Open)
+        Me.Visited = False
+        Me.Cost = 1
         Me.Index = index
         Me.Row = row
         Me.Column = column
@@ -18,6 +25,7 @@ Public Class Node
         Me.Neighbours = New Node(3) {}
         Me.Pencil = New Pen(Brushes.White, 2)
         Me.Dimensions = New Rectangle(x, y, w, h)
+        Me.KnownPlaces = New Dictionary(Of Node, Double)
     End Sub
     Public Sub Draw(g As Graphics)
         For index As Integer = 0 To Me.Neighbours.Count - 1
@@ -49,8 +57,8 @@ Public Class Node
         End If
         Return Nothing
     End Function
-    Public Function GetNeighbours() As Node()
-        Return Me.Neighbours.Where(Function(n) n IsNot Nothing).ToArray
+    Public Function GetNeighbours() As IEnumerable(Of Node)
+        Return Me.Neighbours.Where(Function(n) n IsNot Nothing)
     End Function
     Public Function HasNeighbourAt(direction As Direction) As Boolean
         Return Me.HasNeighbourAt(CType(direction, Integer))
@@ -71,4 +79,22 @@ Public Class Node
             Return New Point(Me.Dimensions.Left + Me.Dimensions.Width \ 2, Me.Dimensions.Top + Me.Dimensions.Height \ 2)
         End Get
     End Property
+    Public ReadOnly Property Location As Point
+        Get
+            Return Me.Dimensions.Location
+        End Get
+    End Property
+    Public Function CompareTo(other As Node) As Integer Implements IComparable(Of Node).CompareTo
+        If (Me.Index > other.Index) Then
+            Return 1
+        ElseIf (Me.Index < other.Index) Then
+            Return -1
+        Else
+            Return 0
+        End If
+    End Function
+    Protected Friend Function F(target As Node) As Double
+        Dim distance As Double = Me.GetDistance(target)
+        If distance <> -1 AndAlso Cost <> -1 Then Return distance + Cost Else Return -1
+    End Function
 End Class

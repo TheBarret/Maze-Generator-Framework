@@ -64,32 +64,35 @@ Public Class Generator
         Return nodes
     End Function
     Private Sub CreateWalls(source As Node)
-        Dim buffer As New List(Of Link), index As Integer, current As Link, target As Node
 
-        For Each n As Node In source.Neighbours
-            If (n IsNot Nothing) Then
-                buffer.Add(New Link(source, n))
-            End If
-        Next
+        Dim links As New List(Of Link), destination As Node
+
+        links.AddRange(source.GetNeighbours.Select(Function(n) New Link(source, n)))
+
         Do
-            index = Me.Randomizer.Next(0, buffer.Count)
-            current = buffer(index)
-            buffer.RemoveAt(index)
-            target = current.Destination
-            current.Destination.Parent = current.Source
-
-            For i As Integer = buffer.Count - 1 To 0
-                If (buffer(i).Destination.Parent IsNot Nothing) Then
-                    buffer.RemoveAt(i)
+            destination = links.Pop(Me.Randomizer.Next(0, links.Count - 1)).AsDestination
+            For i As Integer = links.Count - 1 To 0
+                If (links(i).Destination.HasParent) Then
+                    links.RemoveAt(i)
                 End If
             Next
-            For Each node As Node In target.Neighbours
-                If (node IsNot Nothing AndAlso node.Parent Is Nothing) Then
-                    buffer.Add(New Link(target, node))
+            For Each node As Node In destination.GetNeighbours
+                If (Not node.HasParent) Then
+                    links.Add(New Link(destination, node))
                 End If
             Next
-        Loop While buffer.Count > 0
+        Loop While links.Count > 0
     End Sub
+    Public ReadOnly Property First As Node
+        Get
+            Return Me.Nodes(0, 0)
+        End Get
+    End Property
+    Public ReadOnly Property Last As Node
+        Get
+            Return Me.Nodes(Me.Nodes.GetUpperBound(0), Me.Nodes.GetUpperBound(1))
+        End Get
+    End Property
 #Region "IDisposable Support"
     Private disposedValue As Boolean
     Protected Overridable Sub Dispose(disposing As Boolean)

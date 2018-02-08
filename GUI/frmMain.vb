@@ -8,14 +8,35 @@ Public Class frmMain
         Me.Maze = New Maze.Generator(Me.Scroller.Value, Me.Scroller.Value, Me.Canvas.Size)
         Me.Redraw()
     End Sub
+    Private Sub btnRandomize_Click(sender As Object, e As EventArgs) Handles btnRandomize.Click
+        Me.Redraw()
+    End Sub
+    Private Sub cbAutoSolve_CheckedChanged(sender As Object, e As EventArgs) Handles cbAutoSolve.CheckedChanged
+        Me.DoUpdate = True
+        Me.Refresh()
+    End Sub
     Protected Overrides Sub OnPaint(e As PaintEventArgs)
         If (Me.DoUpdate) Then
             Using bm As New Bitmap(Me.Canvas.Width, Me.Canvas.Height)
                 Using g As Graphics = Graphics.FromImage(bm)
+
                     g.Clear(Color.CornflowerBlue)
                     g.SmoothingMode = Drawing2D.SmoothingMode.HighQuality
+
+                    '// Draw maze
                     Me.Maze.Draw(g)
+
+                    '// Auto solve?
+                    If (Me.cbAutoSolve.Checked) Then
+                        Dim solution As New List(Of Node)
+                        If (New Maze.Solver(Me.Maze).Search(Me.Maze.First, Me.Maze.Last, solution)) Then
+                            g.DrawLines(Pens.Red, solution.Select(Function(x) x.Center).ToArray)
+                        End If
+                    End If
+
                 End Using
+
+                '// Copy to control
                 Me.Canvas.BackgroundImage = CType(bm.Clone, Image)
             End Using
             Me.DoUpdate = False
