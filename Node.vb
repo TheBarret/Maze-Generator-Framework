@@ -22,12 +22,19 @@ Public Class Node
         Me.Pencil = New Pen(Brushes.White, 2)
         Me.Dimensions = New Rectangle(x, y, w, h)
     End Sub
-    Public Sub Draw(g As Graphics)
+    Public Sub Draw(g As Graphics, Optional grid As Boolean = False)
         For index As Integer = 0 To Me.Neighbours.Count - 1
             If (Me.HasNeighbourAt(index)) Then
                 Me.Draw(g, CType(index, Direction))
             End If
         Next
+        If (grid) Then
+            For Each n As Node In Me.GetNeighbours
+                If (Me.IsAccessible(n)) Then
+                    g.DrawLine(Pens.LawnGreen, Me.Center, n.Center)
+                End If
+            Next
+        End If
     End Sub
     Public Sub Draw(g As Graphics, dir As Direction, Optional offset As Integer = 0)
         Select Case dir
@@ -66,6 +73,9 @@ Public Class Node
     Public Function GetDistance(target As Node) As Double
         Return Math.Sqrt(Math.Pow(Math.Abs(Me.Center.X - target.Center.X), 2) + Math.Pow(Math.Abs(Me.Center.Y - target.Center.Y), 2))
     End Function
+    Public Function HasParent(n As Node) As Boolean
+        Return n.Parent IsNot Nothing
+    End Function
     Public Overrides Function ToString() As String
         Return String.Format("Node {0}", Me.Index)
     End Function
@@ -90,6 +100,6 @@ Public Class Node
     End Function
     Protected Friend Function F(target As Node) As Double
         Dim distance As Double = Me.GetDistance(target)
-        If distance <> -1 AndAlso Cost <> -1 Then Return distance + Cost Else Return -1
+        If distance <> -1 AndAlso Cost <> -1 Then Return distance + Me.Cost Else Return -1
     End Function
 End Class

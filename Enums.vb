@@ -1,4 +1,11 @@
-﻿Public Enum Direction As Int32
+﻿Public Enum MazeAlgorithm
+    DepthFirst = 0
+    BackTracker
+    Kruskal
+    Prim
+    Division
+End Enum
+Public Enum Direction As Int32
     North = 0
     South = 1
     East = 2

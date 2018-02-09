@@ -26,31 +26,32 @@ Partial Class frmMain
         Me.Scroller = New System.Windows.Forms.HScrollBar()
         Me.btnRandomize = New System.Windows.Forms.Button()
         Me.cbAutoSolve = New System.Windows.Forms.CheckBox()
+        Me.cbShowGrid = New System.Windows.Forms.CheckBox()
         CType(Me.Canvas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Canvas
         '
-        Me.Canvas.Location = New System.Drawing.Point(12, 12)
+        Me.Canvas.Location = New System.Drawing.Point(17, 12)
         Me.Canvas.Name = "Canvas"
-        Me.Canvas.Size = New System.Drawing.Size(500, 500)
+        Me.Canvas.Size = New System.Drawing.Size(950, 500)
         Me.Canvas.TabIndex = 0
         Me.Canvas.TabStop = False
         '
         'Scroller
         '
         Me.Scroller.LargeChange = 2
-        Me.Scroller.Location = New System.Drawing.Point(9, 531)
-        Me.Scroller.Maximum = 25
+        Me.Scroller.Location = New System.Drawing.Point(17, 531)
+        Me.Scroller.Maximum = 30
         Me.Scroller.Minimum = 2
         Me.Scroller.Name = "Scroller"
         Me.Scroller.Size = New System.Drawing.Size(283, 31)
         Me.Scroller.TabIndex = 1
-        Me.Scroller.Value = 10
+        Me.Scroller.Value = 5
         '
         'btnRandomize
         '
-        Me.btnRandomize.Location = New System.Drawing.Point(295, 531)
+        Me.btnRandomize.Location = New System.Drawing.Point(303, 531)
         Me.btnRandomize.Name = "btnRandomize"
         Me.btnRandomize.Size = New System.Drawing.Size(114, 31)
         Me.btnRandomize.TabIndex = 2
@@ -60,7 +61,7 @@ Partial Class frmMain
         'cbAutoSolve
         '
         Me.cbAutoSolve.Appearance = System.Windows.Forms.Appearance.Button
-        Me.cbAutoSolve.Location = New System.Drawing.Point(415, 531)
+        Me.cbAutoSolve.Location = New System.Drawing.Point(423, 531)
         Me.cbAutoSolve.Name = "cbAutoSolve"
         Me.cbAutoSolve.Size = New System.Drawing.Size(101, 31)
         Me.cbAutoSolve.TabIndex = 3
@@ -68,11 +69,23 @@ Partial Class frmMain
         Me.cbAutoSolve.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.cbAutoSolve.UseVisualStyleBackColor = True
         '
+        'cbShowGrid
+        '
+        Me.cbShowGrid.Appearance = System.Windows.Forms.Appearance.Button
+        Me.cbShowGrid.Location = New System.Drawing.Point(530, 531)
+        Me.cbShowGrid.Name = "cbShowGrid"
+        Me.cbShowGrid.Size = New System.Drawing.Size(101, 31)
+        Me.cbShowGrid.TabIndex = 4
+        Me.cbShowGrid.Text = "Show Grid"
+        Me.cbShowGrid.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.cbShowGrid.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(528, 577)
+        Me.ClientSize = New System.Drawing.Size(984, 577)
+        Me.Controls.Add(Me.cbShowGrid)
         Me.Controls.Add(Me.cbAutoSolve)
         Me.Controls.Add(Me.btnRandomize)
         Me.Controls.Add(Me.Scroller)
@@ -91,5 +104,6 @@ Partial Class frmMain
     Friend WithEvents Scroller As System.Windows.Forms.HScrollBar
     Friend WithEvents btnRandomize As System.Windows.Forms.Button
     Friend WithEvents cbAutoSolve As System.Windows.Forms.CheckBox
+    Friend WithEvents cbShowGrid As System.Windows.Forms.CheckBox
 
 End Class

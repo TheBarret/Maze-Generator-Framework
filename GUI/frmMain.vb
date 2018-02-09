@@ -1,17 +1,22 @@
 ﻿Imports Maze
 
 Public Class frmMain
-    Private Property Maze As Maze.Generator
     Private Property DoUpdate As Boolean
+    Private Property Maze As Maze.Generator
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.DoUpdate = False
         Me.Maze = New Maze.Generator(Me.Scroller.Value, Me.Scroller.Value, Me.Canvas.Size)
+
         Me.Redraw()
     End Sub
     Private Sub btnRandomize_Click(sender As Object, e As EventArgs) Handles btnRandomize.Click
         Me.Redraw()
     End Sub
     Private Sub cbAutoSolve_CheckedChanged(sender As Object, e As EventArgs) Handles cbAutoSolve.CheckedChanged
+        Me.DoUpdate = True
+        Me.Refresh()
+    End Sub
+    Private Sub cbShowGrid_CheckedChanged(sender As Object, e As EventArgs) Handles cbShowGrid.CheckedChanged
         Me.DoUpdate = True
         Me.Refresh()
     End Sub
@@ -24,7 +29,7 @@ Public Class frmMain
                     g.SmoothingMode = Drawing2D.SmoothingMode.HighQuality
 
                     '// Draw maze
-                    Me.Maze.Draw(g)
+                    Me.Maze.Draw(g, Me.cbShowGrid.Checked)
 
                     '// Auto solve?
                     If (Me.cbAutoSolve.Checked) Then

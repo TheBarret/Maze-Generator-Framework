@@ -7,6 +7,7 @@ Public Class Generator
     Public Property Nodes As Node(,)
     Public Property NodesY As Integer
     Public Property NodesX As Integer
+    Public Property Algorithm As MazeAlgorithm
     Protected Friend NodeWidth As Integer
     Protected Friend NodeHeight As Integer
     Protected Friend NodeXmin As Integer
@@ -18,12 +19,18 @@ Public Class Generator
         Me.NodesY = NodesY
         Me.NodesX = NodesX
         Me.Bounds = Bounds
+        Me.Algorithm = MazeAlgorithm.DepthFirst
         Me.Randomize()
     End Sub
-    Public Sub Draw(g As Graphics)
+    Public Sub Draw(g As Graphics, Optional grid As Boolean = False)
         For y As Integer = 0 To Me.Nodes.GetUpperBound(0)
             For x As Integer = 0 To Me.Nodes.GetUpperBound(1)
-                Me.Nodes(y, x).Draw(g)
+                Me.Nodes(y, x).Draw(g, grid)
+                If (Me.Nodes(y, x) Is Me.First) Then
+                    g.DrawEllipse(Pens.Green, Me.Nodes(y, x).Center.X - 2, Me.Nodes(y, x).Center.Y - 2, 4, 4)
+                ElseIf (Me.Nodes(y, x) Is Me.Last) Then
+                    g.DrawEllipse(Pens.Red, Me.Nodes(y, x).Center.X - 2, Me.Nodes(y, x).Center.Y - 2, 4, 4)
+                End If
             Next
         Next
     End Sub
@@ -33,8 +40,7 @@ Public Class Generator
         Me.NodeXmin = (Me.Bounds.Width - Me.NodesX * Me.NodeWidth) \ 2
         Me.NodeYmin = (Me.Bounds.Height - Me.NodesY * Me.NodeHeight) \ 2
         Me.Nodes = Me.CreateNodes(Me.NodesX, Me.NodesY)
-        Me.Nodes(0, 0).Parent = Me.Nodes(0, 0)
-        Me.CreateWalls(Me.Nodes(0, 0))
+        Me.CreateMaze()
     End Sub
     Private Function CreateNodes(w As Integer, h As Integer) As Node(,)
         Dim nodes As Node(,) = New Node(h - 1, w - 1) {}, y As Integer, x As Integer, c As Integer = 1
@@ -64,27 +70,12 @@ Public Class Generator
         Next
         Return nodes
     End Function
-    Private Sub CreateWalls(source As Node)
-        Dim links As New List(Of Link), destination As Node
-
-        links.AddRange(source.GetNeighbours.Select(Function(n) New Link(source, n)))
-
-        Do
-            destination = links.Pop(Me.Randomizer.Next(links.Count)).AsDestination
-
-            For i As Integer = links.Count - 1 To 0
-                If (links(i).Destination.HasParent) Then
-                    links.RemoveAt(i)
-                End If
-            Next
-            For Each node As Node In destination.GetNeighbours
-                If (Not node.HasParent) Then
-                    links.Add(New Link(destination, node))
-                End If
-            Next
-        Loop While links.Count > 0
+    Private Sub CreateMaze()
+        Select Case Me.Algorithm
+            Case MazeAlgorithm.DepthFirst : Algorithms.DepthFirst.Create(Me, Me.First)
+        End Select
     End Sub
-    Public Shared Function Seed() As Int32
+    Private Shared Function Seed() As Int32
         Using rng As New RNGCryptoServiceProvider
             Dim output() As Byte = New Byte(3) {}
             rng.GetBytes(output)
@@ -94,6 +85,11 @@ Public Class Generator
     Public ReadOnly Property First As Node
         Get
             Return Me.Nodes(0, 0)
+        End Get
+    End Property
+    Public ReadOnly Property Middle As Node
+        Get
+            Return Me.Nodes(Me.Nodes.GetUpperBound(0) \ 2, Me.Nodes.GetUpperBound(1) \ 2)
         End Get
     End Property
     Public ReadOnly Property Last As Node
