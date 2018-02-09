@@ -62,7 +62,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithms\DepthFirst.vb" />
+    <Compile Include="Algorithms\BackTrack.vb" />
     <Compile Include="Generator.vb" />
     <Compile Include="Enums.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

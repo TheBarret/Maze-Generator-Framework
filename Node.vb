@@ -5,19 +5,17 @@ Public Class Node
     Public Property Index As Integer
     Public Property Row As Integer
     Public Property Column As Integer
-    Public Property Access As Accessibility
     Public Property Dimensions As Rectangle
     Public Property Pencil As Pen
     Protected Friend Parent As Node
     Protected Friend Cost As Double
     Protected Friend Reminder As Node
     Protected Friend Neighbours As Node()
-    Sub New(index As Integer, row As Integer, column As Integer, x As Integer, y As Integer, w As Integer, h As Integer, Optional Access As Accessibility = Accessibility.Open)
+    Sub New(index As Integer, row As Integer, column As Integer, x As Integer, y As Integer, w As Integer, h As Integer)
         Me.Cost = 1
         Me.Index = index
         Me.Row = row
         Me.Column = column
-        Me.Access = Access
         Me.Neighbours = New Node(3) {}
         Me.Pencil = New Pen(Brushes.White, 2)
         Me.Dimensions = New Rectangle(x, y, w, h)
@@ -71,10 +69,11 @@ Public Class Node
                Me.Neighbours(index) IsNot Me.Parent
     End Function
     Public Function GetDistance(target As Node) As Double
-        Return Math.Sqrt(Math.Pow(Math.Abs(Me.Center.X - target.Center.X), 2) + Math.Pow(Math.Abs(Me.Center.Y - target.Center.Y), 2))
+        Return Math.Sqrt(Math.Pow(Math.Abs(Me.Center.X - target.Center.X), 2) +
+                         Math.Pow(Math.Abs(Me.Center.Y - target.Center.Y), 2))
     End Function
-    Public Function HasParent(n As Node) As Boolean
-        Return n.Parent IsNot Nothing
+    Public Function HasParent() As Boolean
+        Return Me.Parent IsNot Nothing
     End Function
     Public Overrides Function ToString() As String
         Return String.Format("Node {0}", Me.Index)

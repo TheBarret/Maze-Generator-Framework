@@ -1,5 +1,6 @@
 ﻿Imports System.Drawing
 Imports System.Security.Cryptography
+Imports Maze.Algorithms
 
 Public Class Generator
     Inherits Solver
@@ -7,7 +8,6 @@ Public Class Generator
     Public Property Nodes As Node(,)
     Public Property NodesY As Integer
     Public Property NodesX As Integer
-    Public Property Algorithm As MazeAlgorithm
     Protected Friend NodeWidth As Integer
     Protected Friend NodeHeight As Integer
     Protected Friend NodeXmin As Integer
@@ -19,7 +19,6 @@ Public Class Generator
         Me.NodesY = NodesY
         Me.NodesX = NodesX
         Me.Bounds = Bounds
-        Me.Algorithm = MazeAlgorithm.RecursiveBackTrack
         Me.Randomize()
     End Sub
     Public Sub Draw(g As Graphics, Optional grid As Boolean = False)
@@ -40,7 +39,7 @@ Public Class Generator
         Me.NodeXmin = (Me.Bounds.Width - Me.NodesX * Me.NodeWidth) \ 2
         Me.NodeYmin = (Me.Bounds.Height - Me.NodesY * Me.NodeHeight) \ 2
         Me.Nodes = Me.CreateNodes(Me.NodesX, Me.NodesY)
-        Me.CreateMaze()
+        Me.CreateMaze(AddressOf BackTrack.Build, Me.First)
     End Sub
     Private Function CreateNodes(w As Integer, h As Integer) As Node(,)
         Dim nodes As Node(,) = New Node(h - 1, w - 1) {}, y As Integer, x As Integer, c As Integer = 1
@@ -70,10 +69,8 @@ Public Class Generator
         Next
         Return nodes
     End Function
-    Private Sub CreateMaze()
-        Select Case Me.Algorithm
-            Case MazeAlgorithm.RecursiveBackTrack : Algorithms.RecursiveBackTrack.Build(Me, Me.First)
-        End Select
+    Private Sub CreateMaze(method As Action(Of Generator, Node), start As Node)
+        method(Me, start)
     End Sub
     Private Shared Function Seed() As Int32
         Using rng As New RNGCryptoServiceProvider
@@ -87,14 +84,14 @@ Public Class Generator
             Return Me.Nodes(0, 0)
         End Get
     End Property
-    Public ReadOnly Property Middle As Node
-        Get
-            Return Me.Nodes(Me.Nodes.GetUpperBound(0) \ 2, Me.Nodes.GetUpperBound(1) \ 2)
-        End Get
-    End Property
     Public ReadOnly Property Last As Node
         Get
             Return Me.Nodes(Me.Nodes.GetUpperBound(0), Me.Nodes.GetUpperBound(1))
+        End Get
+    End Property
+    Public ReadOnly Property Count As Integer
+        Get
+            Return Me.Nodes.GetUpperBound(0) * Me.Nodes.GetUpperBound(1)
         End Get
     End Property
 #Region "IDisposable Support"
