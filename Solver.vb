@@ -1,5 +1,4 @@
-﻿<Serializable>
-Public MustInherit Class Solver
+﻿Public MustInherit Class Solver
     Public Function Solve(Start As Node, Destination As Node, ByRef Result As List(Of Node)) As Boolean
         Dim open As New List(Of Node) From {Start}
         Dim closed As New List(Of Node)
