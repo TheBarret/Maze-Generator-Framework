@@ -1,6 +1,5 @@
 ﻿Public Enum MazeAlgorithm
-    DepthFirst = 0
-    BackTracker
+    RecursiveBackTrack = 0
     Kruskal
     Prim
     Division

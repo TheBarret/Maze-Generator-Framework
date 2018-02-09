@@ -19,7 +19,7 @@ Public Class Generator
         Me.NodesY = NodesY
         Me.NodesX = NodesX
         Me.Bounds = Bounds
-        Me.Algorithm = MazeAlgorithm.DepthFirst
+        Me.Algorithm = MazeAlgorithm.RecursiveBackTrack
         Me.Randomize()
     End Sub
     Public Sub Draw(g As Graphics, Optional grid As Boolean = False)
@@ -72,7 +72,7 @@ Public Class Generator
     End Function
     Private Sub CreateMaze()
         Select Case Me.Algorithm
-            Case MazeAlgorithm.DepthFirst : Algorithms.DepthFirst.Create(Me, Me.First)
+            Case MazeAlgorithm.RecursiveBackTrack : Algorithms.RecursiveBackTrack.Build(Me, Me.First)
         End Select
     End Sub
     Private Shared Function Seed() As Int32
