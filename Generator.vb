@@ -26,9 +26,9 @@ Public Class Generator
             For x As Integer = 0 To Me.Nodes.GetUpperBound(1)
                 Me.Nodes(y, x).Draw(g, grid)
                 If (Me.Nodes(y, x) Is Me.First) Then
-                    g.DrawEllipse(Pens.Green, Me.Nodes(y, x).Center.X - 2, Me.Nodes(y, x).Center.Y - 2, 4, 4)
+                    g.FillEllipse(Brushes.Green, Me.Nodes(y, x).Center.X - 2, Me.Nodes(y, x).Center.Y - 2, 4, 4)
                 ElseIf (Me.Nodes(y, x) Is Me.Last) Then
-                    g.DrawEllipse(Pens.Red, Me.Nodes(y, x).Center.X - 2, Me.Nodes(y, x).Center.Y - 2, 4, 4)
+                    g.FillEllipse(Brushes.Red, Me.Nodes(y, x).Center.X - 2, Me.Nodes(y, x).Center.Y - 2, 4, 4)
                 End If
             Next
         Next
@@ -39,7 +39,7 @@ Public Class Generator
         Me.NodeXmin = (Me.Bounds.Width - Me.NodesX * Me.NodeWidth) \ 2
         Me.NodeYmin = (Me.Bounds.Height - Me.NodesY * Me.NodeHeight) \ 2
         Me.Nodes = Me.CreateNodes(Me.NodesX, Me.NodesY)
-        Me.CreateMaze(AddressOf BackTrack.Build, Me.First)
+        Me.CreateMaze(AddressOf Backtrack.Build, Me.First)
     End Sub
     Private Function CreateNodes(w As Integer, h As Integer) As Node(,)
         Dim nodes As Node(,) = New Node(h - 1, w - 1) {}, y As Integer, x As Integer, c As Integer = 1
@@ -69,8 +69,8 @@ Public Class Generator
         Next
         Return nodes
     End Function
-    Private Sub CreateMaze(method As Action(Of Generator, Node), start As Node)
-        method(Me, start)
+    Private Sub CreateMaze(algorithm As Action(Of Generator, Node), start As Node)
+        algorithm(Me, start)
     End Sub
     Private Shared Function Seed() As Int32
         Using rng As New RNGCryptoServiceProvider
